@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- ======================================================
+    🎂 BIRTHDAY SURPRISE SPA — index.html
+    ======================================================
+    Autor: Desarrollador Frontend Senior
+    Descripción: SPA interactiva de regalo de cumpleaños.
+    4 Fases: Splash → Dashboard → Life Reels → Quiz Polaroid
+    
+    DESPLIEGUE: Subir index.html, style.css y main.js
+    a la raíz del repositorio de GitHub Pages.
+    ====================================================== -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>🎂 ¡Feliz Cumpleaños! — Una Sorpresa Especial Para Ti</title>
+  <meta name="description" content="Una sorpresa de cumpleaños interactiva llena de recuerdos, videos y momentos especiales.">
+  <meta name="theme-color" content="#ff66b2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <!-- Open Graph para compartir en redes sociales -->
+  <meta property="og:title" content="🎂 ¡Feliz Cumpleaños!">
+  <meta property="og:description" content="Alguien te preparó una sorpresa especial. ¡Haz clic para descubrirla!">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon emoji -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
+
+  <!-- Estilos principales -->
+  <link rel="stylesheet" href="style.css?v=11">
+</head>
+
+<body>
+  <!-- BGM de Fondo -->
+  <audio id="bgm" src="Tokyo Ghoul OST - Wanderers (Instrumental Version).mp3" loop preload="auto"></audio>
+
+  <!-- ===========================================================
+       FASE 1: SPLASH SCREEN
+       ===========================================================
+       Pantalla de inicio que ocupa el 100% del viewport.
+       Al hacer clic, dispara la explosión de partículas en el
+       canvas y luego revela el contenido principal.
+       =========================================================== -->
+  <div id="splash-screen" role="button" aria-label="Presiona para comenzar la experiencia de cumpleaños" tabindex="0">
+    <!-- Canvas para la animación de explosión de partículas -->
+    <canvas id="explosion-canvas" aria-hidden="true"></canvas>
+    
+    <!-- Texto central con animación de pulso -->
+    <p id="splash-text">Presiona para comenzar</p>
+  </div>
+
+
+  <!-- ===========================================================
+       CONTENEDOR PRINCIPAL (oculto hasta que el splash desaparece)
+       ===========================================================
+       Contiene las Fases 2, 3 y 4. Se muestra tras la explosión.
+       =========================================================== -->
+  <div id="main-content" class="hidden">
+
+    <!-- =========================================================
+         DECORACIONES GLOBALES — Globos y confeti por toda la página
+         =========================================================
+         Posicionados con position: fixed para flotar sobre todo
+         el scroll. pointer-events: none para no interferir.
+         ========================================================= -->
+    <div class="global-decorations" aria-hidden="true">
+      <!-- Globos pixel-art flotantes distribuidos por toda la página -->
+      <div class="pixel-balloon balloon-1 balloon-red"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+      <div class="pixel-balloon balloon-2 balloon-pink"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+      <div class="pixel-balloon balloon-3 balloon-gold"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+      <div class="pixel-balloon balloon-4 balloon-purple"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+      <div class="pixel-balloon balloon-5 balloon-cyan"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+      <div class="pixel-balloon balloon-6 balloon-red"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+      <div class="pixel-balloon balloon-7 balloon-pink"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+      <div class="pixel-balloon balloon-8 balloon-gold"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+      <div class="pixel-balloon balloon-9 balloon-purple"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+      <div class="pixel-balloon balloon-10 balloon-cyan"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+      <div class="pixel-balloon balloon-11 balloon-red"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+      <div class="pixel-balloon balloon-12 balloon-pink"><div class="balloon-shine"></div><div class="balloon-string"></div></div>
+
+      <!-- Confeti pixel flotante -->
+      <div class="pixel-confetti confetti-1"></div>
+      <div class="pixel-confetti confetti-2"></div>
+      <div class="pixel-confetti confetti-3"></div>
+      <div class="pixel-confetti confetti-4"></div>
+      <div class="pixel-confetti confetti-5"></div>
+      <div class="pixel-confetti confetti-6"></div>
+      <div class="pixel-confetti confetti-7"></div>
+      <div class="pixel-confetti confetti-8"></div>
+    </div>
+
+    <!-- =========================================================
+         FASE 2: DASHBOARD VIBRANTE
+         =========================================================
+         Tarjetas interactivas con estadísticas de amistad.
+         El contador "Horas Juntos" se sincroniza con Firebase
+         Firestore en tiempo real.
+         ========================================================= -->
+    <section id="dashboard" aria-label="Dashboard de cumpleaños">
+
+      <!-- Encabezado del Dashboard -->
+      <header class="dashboard-header">
+        <div class="pixel-cake" aria-hidden="true">
+          <div class="cake-candle"></div>
+          <div class="cake-flame"></div>
+          <div class="cake-top"></div>
+          <div class="cake-body"></div>
+          <div class="cake-base"></div>
+        </div>
+        <h1 id="birthday-title">¡Feliz Cumpleaños!</h1>
+        <p class="dashboard-subtitle" id="birthday-subtitle">Un regalo especial para ti</p>
+        <div class="header-stars" aria-hidden="true">
+          <span class="pixel-star"></span>
+          <span class="pixel-star star-delay-1"></span>
+          <span class="pixel-star star-delay-2"></span>
+        </div>
+      </header>
+
+      <!-- Contenedor de tarjetas estadísticas -->
+      <div class="cards-container">
+        
+        <!-- TARJETA PRINCIPAL — Contador "Horas Juntos" -->
+        <!-- El valor se obtiene de Firestore y se actualiza en tiempo real -->
+        <div class="stat-card main-card" id="card-hours">
+          <div class="card-icon pixel-clock" aria-hidden="true"></div>
+          <h2>Horas Juntos</h2>
+          <div id="hours-counter" class="counter-value" aria-live="polite">0</div>
+          
+          <!-- Botones para sumar horas (actualiza Firestore con increment) -->
+          <div class="counter-buttons">
+            <button class="btn-increment" data-value="1" id="btn-add-1" aria-label="Sumar 1 hora">+1</button>
+            <button class="btn-increment" data-value="10" id="btn-add-10" aria-label="Sumar 10 horas">+10</button>
+            <button class="btn-increment" data-value="67" id="btn-add-67" aria-label="Sumar 67 horas">+67</button>
+          </div>
+        </div>
+
+        <!-- MINIJUEGO 1 — Cazador de Risas -->
+        <div class="stat-card minigame-card" id="card-laughs" style="flex-direction: column; align-items: stretch; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; font-size: 1rem;">Cazador de Risas</h3>
+            <div class="scores" style="display: flex; gap: 8px; font-size: 0.8rem; font-weight: 600;">
+              <span style="background: var(--pink-light); color: var(--pink-dark); padding: 2px 6px; border-radius: 4px;">Pts: <span id="score-current">0</span></span>
+              <span style="background: var(--gold-light); color: #b8860b; padding: 2px 6px; border-radius: 4px;">Top: <span id="score-high">0</span></span>
+            </div>
+          </div>
+          <div class="minigame-arena" id="laughs-arena" style="position: relative; height: 80px; background: rgba(0,0,0,0.03); border-radius: 8px; overflow: hidden; cursor: crosshair;">
+            <div class="pixel-heart-laugh" id="laugh-target" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: top 0.2s, left 0.2s;" aria-label="Atrapar risa"></div>
+          </div>
+          <p id="laugh-status" style="margin: 0; font-size: 0.8rem; color: var(--gray-400); text-align: center;">Haz clic en la carita antes de que huya</p>
+        </div>
+
+        <!-- MINIJUEGO 2 — Medidor de Amistad -->
+        <div class="stat-card minigame-card" id="card-friendship" style="flex-direction: column; align-items: stretch; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; font-size: 1rem;">Nivel de Amistad</h3>
+            <span id="friendship-status" style="font-size: 0.85rem; font-weight: 700; color: var(--pink-primary);">0%</span>
+          </div>
+          <div style="height: 12px; background: var(--gray-200); border-radius: 6px; overflow: hidden; position: relative;">
+            <div id="friendship-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--pink-primary), var(--gold)); transition: width 0.1s linear;"></div>
+          </div>
+          <button id="btn-mash" style="background: var(--pink-primary); color: white; border: none; border-radius: 8px; padding: 8px; font-weight: bold; cursor: pointer; transition: transform 0.1s; user-select: none;">¡TOCA RÁPIDO!</button>
+        </div>
+      </div>
+
+      <!-- Botón para navegar a Life Reels -->
+      <div class="btn-container">
+        <a href="#life-reels" class="btn-life-reels" id="btn-go-reels">
+          <span class="pixel-clapperboard" aria-hidden="true"></span> Life Reels
+        </a>
+      </div>
+    </section>
+
+
+    <!-- =========================================================
+         FASE 3: LIFE REELS
+         =========================================================
+         Reproductor de video en formato smartphone (9:16).
+         Los videos se cargan desde un array en Firestore.
+         Bucle infinito con lógica de módulo.
+         ========================================================= -->
+    <section id="life-reels" aria-label="Galería de videos Life Reels">
+      <h2 class="section-title">Life Reels</h2>
+      <p class="section-subtitle">Mejores momentos</p>
+
+      <!-- Contenedor "smartphone" para los videos -->
+      <div class="phone-container">
+        <div class="phone-notch" aria-hidden="true"></div>
+        <div class="phone-screen">
+          <!-- Placeholder cuando no hay videos -->
+          <div class="reel-placeholder" id="reel-placeholder">
+            <div class="placeholder-icon">🎥</div>
+            <p>Añade tu primer reel</p>
+          </div>
+          
+          <!-- Reproductor de video -->
+          <video id="reel-player" 
+                 playsinline 
+                 muted
+                 aria-label="Reproductor de Life Reels">
+            Tu navegador no soporta el elemento video.
+          </video>
+
+          <!-- Overlay play/pause (dentro de phone-screen) -->
+          <div class="reel-play-overlay" id="reel-play-overlay">
+            <div class="play-icon" id="play-icon">▶</div>
+          </div>
+
+          <!-- Botón de Sonido -->
+          <button id="btn-mute" class="btn-mute" aria-label="Activar o desactivar sonido">
+            <div class="pixel-volume"></div>
+            <div class="pixel-volume-waves" id="volume-waves" style="display: none;"></div>
+          </button>
+
+          <!-- HUD tipo TikTok -->
+          <div class="reel-hud" id="reel-hud">
+            <div class="hud-action" id="btn-like">
+              <div class="pixel-heart-empty" id="hud-heart-icon"></div>
+              <span class="hud-count" id="hud-like-count">0</span>
+            </div>
+            <div class="hud-action" id="btn-comment">
+              <div class="pixel-bubble"></div>
+              <span class="hud-count" id="hud-comment-count">0</span>
+            </div>
+          </div>
+
+          <!-- Bottom Sheet de Comentarios -->
+          <div class="comments-sheet" id="comments-sheet">
+            <div class="comments-header">
+              <h3>Comentarios</h3>
+              <button id="btn-close-comments" class="btn-close-comments">✕</button>
+            </div>
+            <div class="comments-list" id="comments-list">
+              <!-- Comentarios inyectados por JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles de navegación del reel -->
+      <div class="reel-controls">
+        <button id="btn-prev-reel" aria-label="Video anterior"><div class="pixel-arrow-up"></div></button>
+        <button id="btn-play-pause" aria-label="Pausar/Reproducir" class="btn-play-pause">⏸</button>
+        <button id="btn-next-reel" aria-label="Siguiente video"><div class="pixel-arrow-down"></div></button>
+      </div>
+
+      <!-- Indicador de posición -->
+      <div class="reel-indicator">
+        <span id="reel-current">0</span> / <span id="reel-total">0</span>
+      </div>
+
+      <!-- Input discreto para añadir nuevos reels a Firestore -->
+      <div class="add-reel-container">
+        <input type="url" 
+               id="new-reel-url" 
+               placeholder="Pega la URL del video (mp4, webm)..."
+               aria-label="URL del nuevo video">
+        <button id="btn-add-reel" aria-label="Añadir nuevo reel">Añadir</button>
+      </div>
+    </section>
+
+
+      <!-- =========================================================
+         FASE 4: QUIZ POLAROID
+         =========================================================
+         Quiz de 4 preguntas. Si falla, vibra y reinicia.
+         Al completarlo, revela la foto Polaroid y muestra
+         un mensaje final emotivo.
+         ========================================================= -->
+    <section id="quiz-section" aria-label="Quiz para desbloquear el recuerdo">
+      <h2 class="section-title">Desbloquea los Recuerdos</h2>
+      <p class="quiz-instruction">
+        Responde correctamente las 2 preguntas sobre nuestra amistad para revelar la imagen.
+        <br><em>¡Cuidado! Si fallas, vuelves a la primera pregunta del nivel actual...</em>
+      </p>
+
+      <!-- Galería Polaroid (inicia censurada) -->
+      <div class="polaroid-wrapper">
+        <!-- Indicador de nivel -->
+        <div class="gallery-level" id="gallery-level">Nivel 1 de 11</div>
+        
+        <div class="polaroid-container blurred" id="polaroid-container">
+          <div class="polaroid-lock" id="polaroid-lock" aria-hidden="true">🔒</div>
+          <img class="polaroid-photo" id="polaroid-photo" src="" alt="Recuerdo especial desbloqueado" loading="lazy">
+          
+          <div class="polaroid-info" id="polaroid-info" style="display:none;">
+            <div class="polaroid-title" id="polaroid-title"></div>
+            <div class="polaroid-rarity" id="polaroid-rarity"></div>
+            <div class="polaroid-desc" id="polaroid-desc"></div>
+          </div>
+        </div>
+        
+        <!-- Botones de Navegación -->
+        <div class="gallery-nav" id="gallery-nav">
+          <button id="btn-prev-photo" class="btn-gallery" style="display:none;">◄ Anterior</button>
+          <button id="btn-next-photo" class="btn-gallery" style="display:none;">Siguiente ►</button>
+        </div>
+      </div>
+
+      <!-- Contenedor del Quiz -->
+      <div id="quiz-container">
+        <!-- Puntos de progreso visual -->
+        <div class="quiz-progress" id="quiz-progress" aria-label="Progreso del quiz">
+          <div class="progress-dot active" data-step="0"></div>
+          <div class="progress-dot" data-step="1"></div>
+        </div>
+
+        <!-- Indicador textual -->
+        <div class="quiz-status">Pregunta <span id="quiz-current-num">1</span> de 2</div>
+
+        <!-- Pregunta actual -->
+        <div class="quiz-question" id="quiz-question" aria-live="polite"></div>
+
+        <!-- Opciones de respuesta (se generan dinámicamente con JS) -->
+        <div class="quiz-options" id="quiz-options" role="group" aria-label="Opciones de respuesta"></div>
+      </div>
+
+      <!-- Mensaje final emotivo (oculto hasta completar el quiz) -->
+      <div id="final-message" class="hidden" aria-live="polite">
+        <div class="final-emoji" aria-hidden="true">💝</div>
+        <p class="final-text" id="final-text"></p>
+        <p class="final-signature" id="final-signature"></p>
+      </div>
+    </section>
+
+  </div> <!-- /main-content -->
+
+
+  <!-- ===========================================================
+       CANVAS DE CONFETI — Overlay global
+       ===========================================================
+       Se activa al completar el quiz. Cubre todo el viewport
+       con pointer-events: none para no bloquear interacciones.
+       =========================================================== -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+
+  <!-- ===========================================================
+       CONTENEDOR DE TOASTS/NOTIFICACIONES
+       ===========================================================
+       Elemento para mostrar notificaciones temporales (toasts)
+       cuando se añade un reel o se incrementa el contador.
+       =========================================================== -->
+  <div id="toast-container" class="toast" aria-live="assertive" role="alert"></div>
+
+
+  <!-- ===========================================================
+       SCRIPT PRINCIPAL (ES Module)
+       ===========================================================
+       Carga main.js como módulo ES6 para poder usar import/export
+       con Firebase V10 (Web Modular API) desde CDN.
+       =========================================================== -->
+  <script type="module" src="main.js?v=11"></script>
+
+</body>
+</html>
