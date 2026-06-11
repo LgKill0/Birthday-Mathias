@@ -131,7 +131,7 @@ const CONFIGURACION_USUARIO = {
     { pregunta: "¿Cuantos años mentales tiene el mathias?", opciones: ["6", "8", "10", "12"], correcta: 1 },
     { pregunta: "¿Edad de todo el grupo sumada y elevada al cuadrado?", opciones: ["15000", "17161", "18200", "19000"], correcta: 1 },
     { pregunta: "¿En que clase estabamos cuando 'Alguien' casi quema la sala?", opciones: ["Matematica", "Remplazo", "Lenguaje", "Fisica"], correcta: 1 },
-    { pregunta: "¿Como se llamaba el server de minecraft que hacia alucion a un juego chistoso?", opciones: ["Summer Time", "Winter Season", "Spring Field", "Autumn Fall"], correcta: 1 }
+    { pregunta: "¿Como se llamaba el server de minecraft que hacia alucion a un juego chistoso?", opciones: ["Summer Time", "Winter Memories", "Spring Field", "Autumn Fall"], correcta: 1 }
   ],
 
   // ---------------------------------------------------------
