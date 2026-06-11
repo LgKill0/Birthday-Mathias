@@ -602,9 +602,8 @@ function initSplashScreen() {
     }, 1500);
   }
 
-  // Escuchar clic y toque (mobile)
+  // Escuchar clic (mobile dispara clic automáticamente tras el touch)
   splashEl.addEventListener('click', handleSplashClick);
-  splashEl.addEventListener('touchstart', handleSplashClick, { passive: true });
 
   // También permitir activación con teclado (accesibilidad)
   splashEl.addEventListener('keydown', (e) => {
@@ -778,35 +777,6 @@ function initApp() {
     });
   }
 
-  // --- NUEVO: Detección de Swipe Táctil (Vertical) ---
-  const phoneScreen = document.querySelector('.phone-screen');
-  let touchStartY = 0;
-  let touchEndY = 0;
-  
-  if (phoneScreen) {
-    phoneScreen.addEventListener('touchstart', (e) => {
-      touchStartY = e.changedTouches[0].screenY;
-    }, { passive: true });
-
-    phoneScreen.addEventListener('touchend', (e) => {
-      touchEndY = e.changedTouches[0].screenY;
-      handleSwipe();
-    }, { passive: true });
-  }
-
-  function handleSwipe() {
-    if (reelsArray.length === 0) return;
-    const threshold = 50; // Distancia mínima para considerar que es un swipe
-    if (touchStartY - touchEndY > threshold) {
-      // Swipe hacia arriba -> Siguiente video
-      currentReelIndex = (currentReelIndex + 1) % reelsArray.length;
-      loadReel(currentReelIndex, 1);
-    } else if (touchEndY - touchStartY > threshold) {
-      // Swipe hacia abajo -> Video anterior
-      currentReelIndex = (currentReelIndex - 1 + reelsArray.length) % reelsArray.length;
-      loadReel(currentReelIndex, -1);
-    }
-  }
 
   // --- HUD: Botón Like ---
   const btnLike = document.getElementById('btn-like');
@@ -930,25 +900,6 @@ function initApp() {
     if (e.key === 'Enter') addNewReel();
   });
 
-  // --- SWIPE (GESTOS TÁCTILES) PARA REELS ---
-  let reelTouchStartY = 0;
-  let reelTouchEndY = 0;
-  const reelContainer = document.querySelector('.reel-container');
-  if (reelContainer) {
-    reelContainer.addEventListener('touchstart', (e) => {
-      reelTouchStartY = e.changedTouches[0].screenY;
-    }, {passive: true});
-    reelContainer.addEventListener('touchend', (e) => {
-      reelTouchEndY = e.changedTouches[0].screenY;
-      const swipeThreshold = 50;
-      if (reelTouchEndY < reelTouchStartY - swipeThreshold) {
-        document.getElementById('btn-next-reel').click();
-      }
-      if (reelTouchEndY > reelTouchStartY + swipeThreshold) {
-        document.getElementById('btn-prev-reel').click();
-      }
-    }, {passive: true});
-  }
 
   // --- BOTONES DE NAVEGACION POLAROID ---
   document.getElementById('btn-prev-photo').addEventListener('click', () => {
